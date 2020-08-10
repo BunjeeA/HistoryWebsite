@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Fun with Anime.js</title>
+  <title>Histourism</title>
   <link rel="stylesheet" href="style.css">
   <style>
     /* Set the size of the div element that contains the map */
@@ -13,12 +13,28 @@
 </head>
 <body>
 
+<div id = 'navbar'>
+  <a href="#home">Home</a>
+
+  <div class = 'dropdown'>
+    <button onclick="dropDown()" class = "dropbtn">Countries</button>
+    
+    <div id='dropdownList' class = 'dropdown-content'>
+      <a href = '#'> Country 1</a>
+      <a href = '#'> Country 2</a>
+      <a href = '#'> Country 3</a>
+    </div>
+    
+  </div>
+
+</div>
+
   <h3>My Google Maps Demo</h3>
     <!--The div element for the map -->
     <div id="map"></div>
     <script>
 // Initialize and add the map
-function initMap() {
+/*function initMap() {
   // The location of Uluru
   var uluru = {lat: -25.344, lng: 131.036};
   // The map, centered at Uluru
@@ -26,6 +42,67 @@ function initMap() {
       document.getElementById('map'), {zoom: 4, center: uluru});
   // The marker, positioned at Uluru
   var marker = new google.maps.Marker({position: uluru, map: map});
+}*/
+
+
+
+
+let url = 'https://maps.googleapis.com/maps/api/geocode/json?address=United+States,+Mountain+View,+CA&key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU'
+let countryGeo;
+
+  fetch(url)
+  .then(function(response){
+      return response.json();
+  }).then(function(myJson){
+      console.log(myJson);
+    console.log(myJson.results[0].geometry.location);
+    let countryCoord = myJson.results[0].geometry.location;
+    countryGeo = countryCoord;
+  });
+  
+function initMap() {
+  var uluru = countryGeo;
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: uluru
+  });
+
+  var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<div id="bodyContent">'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+      'sandstone rock formation in the southern part of the '+
+      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+      'south west of the nearest large town, Alice Springs; 450&#160;km '+
+      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+      'Aboriginal people of the area. It has many springs, waterholes, '+
+      'rock caves and ancient paintings. Uluru is listed as a World '+
+      'Heritage Site.</p>'+
+      '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target = "_blank">'+
+      'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+      '(last visited June 22, 2009).</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
+  var marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    title: 'Uluru (Ayers Rock)'
+  });
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+  marker.addListener('dblclick', function(){
+    infowindow.close(map,marker);
+  });
 }
     </script>
     <!--Load the API from the specified URL
