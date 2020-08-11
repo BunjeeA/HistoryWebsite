@@ -13,55 +13,67 @@
 </head>
 <body>
 
-<div id = 'navbar'>
+<div class="navbar">
   <a href="#home">Home</a>
-
-  <div class = 'dropdown'>
-    <button onclick="dropDown()" class = "dropbtn">Countries</button>
-    
-    <div id='dropdownList' class = 'dropdown-content'>
-      <a href = '#'> Country 1</a>
-      <a href = '#'> Country 2</a>
-      <a href = '#'> Country 3</a>
-    </div>
-    
-  </div>
-
+  <a href="#travel">Travel</a> 
 </div>
 
-  <h3>My Google Maps Demo</h3>
+  <h3>Histourism</h3>
+  <input id = 'searchBar' type = "text" placeholder="Enter a Country">
+  <button type="submit" id = 'submitbutton'>Submit</button>
+
     <!--The div element for the map -->
     <div id="map"></div>
     <script>
-// Initialize and add the map
-/*function initMap() {
-  // The location of Uluru
-  var uluru = {lat: -25.344, lng: 131.036};
-  // The map, centered at Uluru
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: uluru});
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({position: uluru, map: map});
-}*/
+// This example displays a marker at the center of Australia.
+// When the user clicks the marker, an info window opens.
+let countryGeo = {
+  lat: 0,
+  lng: 0
+}
+let countrypick = 'united&states'
+let dombutton = document.getElementById('submitbutton');
+let querytext = document.getElementById('searchBar');
 
+dombutton.addEventListener('click',changeCountry);
 
+function changeCountry(){
+  event.preventDefault();
+  let userInput = querytext.value;
+  countrypick = userInput;
+  changeCo();
+}
 
+//CODE TO SPLICE IN AMPERSNAD BETWEEN SPACES
+//IF TIME ALLOWS GET INITIAL MAP
 
-let url = 'https://maps.googleapis.com/maps/api/geocode/json?address=United+States,+Mountain+View,+CA&key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU'
-let countryGeo;
+//write some code an if statement that figures out which country you selected
+function changeCo(){
+let u1 = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+let u2 = '&key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU';
+console.log(countrypick);
+let url = u1.concat(countrypick,u2);
+console.log(url);
 
-  fetch(url)
+fetch(url)
   .then(function(response){
       return response.json();
   }).then(function(myJson){
       console.log(myJson);
     console.log(myJson.results[0].geometry.location);
     let countryCoord = myJson.results[0].geometry.location;
-    countryGeo = countryCoord;
+    countryGeo.lat = countryCoord.lat;
+    countryGeo.lng = countryCoord.lng;
+  console.log(countryGeo);
+    initMap(countryGeo.lat, countryGeo.lng);
   });
-  
-function initMap() {
-  var uluru = countryGeo;
+
+}
+console.log(countryGeo);
+console.log(countryGeo.lat);
+ function initMap(lat, lng) {
+  console.log("Lat: ", lat)
+  var uluru = {lat: lat, lng: lng};
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
     center: uluru
@@ -82,7 +94,7 @@ function initMap() {
       'Aboriginal people of the area. It has many springs, waterholes, '+
       'rock caves and ancient paintings. Uluru is listed as a World '+
       'Heritage Site.</p>'+
-      '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target = "_blank">'+
+      '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
       'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
       '(last visited June 22, 2009).</p>'+
       '</div>'+
@@ -111,7 +123,7 @@ function initMap() {
     * The callback parameter executes the initMap() function
     -->
     <script defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU">
     </script>
 
   <div class="container">
