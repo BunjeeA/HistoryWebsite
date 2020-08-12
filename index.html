@@ -34,13 +34,23 @@ let countryGeo = {
 let countrypick = 'united&states'
 let dombutton = document.getElementById('submitbutton');
 let querytext = document.getElementById('searchBar');
+let mapDom = document.getElementById('map');
 
 dombutton.addEventListener('click',changeCountry);
+mapDom.addEventListener('',onLoadEvent);
+
+function onLoadEvent(){
+  querytext.value = 'united&states';
+  dombutton.click();
+  changeCountry();
+}
 
 function changeCountry(){
   event.preventDefault();
   let userInput = querytext.value;
+  let userFormatted = userInput.replace(' ','&');
   countrypick = userInput;
+  querytext.value = ' ';
   changeCo();
 }
 
@@ -71,6 +81,7 @@ fetch(url)
 }
 console.log(countryGeo);
 console.log(countryGeo.lat);
+
  function initMap(lat, lng) {
   console.log("Lat: ", lat)
   var uluru = {lat: lat, lng: lng};
@@ -79,6 +90,7 @@ console.log(countryGeo.lat);
     center: uluru
   });
 
+  
   var contentString = '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
@@ -123,7 +135,7 @@ console.log(countryGeo.lat);
     * The callback parameter executes the initMap() function
     -->
     <script defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU&callback=onLoadEvent">
     </script>
 
   <div class="container">
