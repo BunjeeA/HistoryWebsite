@@ -1,7 +1,10 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"></html>
 <head>
   <title>Histourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     /* Set the size of the div element that contains the map */
@@ -12,15 +15,15 @@
  </style>
 </head>
 <body>
-
 <div class="navbar">
-  <a href="#home">Home</a>
-  <a href="#travel">Travel</a> 
+  <a href="index.html">Home</a>
+  <a href="travel.html" >Travel</a> 
+  <img id = 'logo' src = 'https://i.ibb.co/wrBr4y8/project-logo.png'height = "50px">
 </div>
 
-  <h3>Histourism</h3>
+  <h2 id = 'histourism'>Histourism</h2>
   <input id = 'searchBar' type = "text" placeholder="Enter a Country">
-  <button type="submit" id = 'submitbutton'>Submit</button>
+  <button type="submit" id = 'submitbutton'> Submit</button>
 
     <!--The div element for the map -->
     <div id="map"></div>
@@ -50,7 +53,7 @@ function changeCountry(){
   let userInput = querytext.value;
   let userFormatted = userInput.replace(' ','&');
   countrypick = userInput;
-  querytext.value = ' ';
+  querytext.value = '';
   changeCo();
 }
 
@@ -90,29 +93,80 @@ console.log(countryGeo.lat);
     center: uluru
   });
 
-  
-  var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-      'sandstone rock formation in the southern part of the '+
-      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-      'south west of the nearest large town, Alice Springs; 450&#160;km '+
-      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-      'Aboriginal people of the area. It has many springs, waterholes, '+
-      'rock caves and ancient paintings. Uluru is listed as a World '+
-      'Heritage Site.</p>'+
-      '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-      'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-      '(last visited June 22, 2009).</p>'+
-      '</div>'+
-      '</div>';
+let Ru1 = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+let Ru2 = '&key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU';
+let Rurl = Ru1.concat(lat,',',lng,Ru2);
+console.log(Rurl);
 
-  var infowindow = new google.maps.InfoWindow({
+
+let countName;
+fetch(Rurl)
+  .then(function(response){
+      return response.json();
+  }).then(function(myJson){
+      console.log(myJson);
+      let jsonL = Object.keys(myJson.results).length -1;
+      console.log(jsonL);
+      console.log(myJson.results[jsonL].address_components[0].long_name);
+      let countryName = myJson.results[jsonL].address_components[0].long_name;
+      countryNameReturn(countryName);
+  });
+
+  function countryNameReturn(name){
+let u1 ='https://restcountries.eu/rest/v2/name/';
+let countryName;
+
+switch(name){
+  case "United States":
+    countryName = 'United States of America'; 
+    break;
+  default:
+    countryName = name;
+}
+
+console.log(countryName);//check
+let formatCountName;// define
+formatCountName = countryName.replace(' ','%20');// replaces the spaces with %20 for the url
+while(formatCountName.includes(' ')){
+  formatCountName = formatCountName.replace(' ','%20');// replaces it until there are no spaces left
+}
+let url = u1.concat(formatCountName)
+if (url == 'https://restcountries.eu/rest/v2/name/India' && name == 'India'){
+  url = 'https://restcountries.eu/rest/v2/name/india?fullText=true'
+}
+console.log(url);// check
+fetch(url)
+  .then(function(response){
+      return response.json();
+  }).then(function(myJson){
+      console.log(myJson);
+      console.log(myJson[0]);
+      let cCapital = myJson[0].capital;
+      let cPopulation = myJson[0].population;
+      let cLanguage = myJson[0].languages[0].name;
+      let cFlag = myJson[0].flag;
+      let cCurrency = myJson[0].currencies[0].name;
+      let cCCode = myJson[0].currencies[0].code;
+      let cCallingC = myJson[0].calling
+
+      var contentString = `<div id="content">
+      <div id="siteNotice">
+      </div>
+      <h1 id="firstHeading" class="firstHeading">${name}</h1>
+      <div id="bodyContent">
+      <img src = '${cFlag}'width ='150' height= '75'>
+      <p> <strong>Capital:</strong> ${cCapital} <br>
+      <strong>Population:</strong> ${cPopulation} <br>
+    <strong>Language:</strong> ${cLanguage}<br>
+    <strong>Currency:</strong> ${cCurrency}(${cCCode})<br>
+    <strong>Calling Code:</strong> +${cCallingC}<br>
+      </p>
+      <p>More Info : <a href="https://simple.wikipedia.org/wiki/${formatCountName}" target='_blank'>
+      ${name}</a> </p>
+      </div>
+      </div>`;
+
+      var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
 
@@ -126,7 +180,9 @@ console.log(countryGeo.lat);
   });
   marker.addListener('dblclick', function(){
     infowindow.close(map,marker);
+  });//rest countries API, Google Maps API, TravelPayouts API
   });
+  }
 }
     </script>
     <!--Load the API from the specified URL
@@ -138,16 +194,6 @@ console.log(countryGeo.lat);
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU&callback=onLoadEvent">
     </script>
 
-  <div class="container">
-    <div id="nameContainer">
-      Your Name Here
-    </div>
-  </div>
+<script src="main.js" defer></script>
+  </html>
 
-  <!-- Animejs Lib -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
-
-  <!-- Your custom scripts -->
-  <script src="main.js" defer></script>
-</body>
-</html>

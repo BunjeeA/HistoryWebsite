@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Histourism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="travel.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="travel.html" >Travel</a> 
+        <img id = 'logo' src = 'https://i.ibb.co/wrBr4y8/project-logo.png'height = "50px">
+      </div>
+
+<h1 id= 'header'>Trip Planner</h1>
+    <div id = "plannerContainer">
+        <h6>* required</h6>
+    <h3 class = 'questions'>*Origin City: </h3>
+    <input onfocus="this.value=''" id = 'ocitySearch' type = "text" placeholder="Country">
+    <div class="dropdown">
+        <button type="submit" id = 'dropbtn' onclick = 'searchFunction()'>Search</button>
+        <div id="oDropdown" class="dropdown-content">
+          <input type="text" placeholder="Choose Airline" id="airlineDrop" onkeyup="filterFunction()">
+        </div>
+      </div>
+    <br>
+    <br>
+    
+    <h3 class = 'questions'> *Destination: </h3>
+    <input onfocus="this.value=''" id = 'dcitySearch' type = "text" placeholder="Country">
+    <div class="dropdown">
+        <button type="submit" onclick = 'searchFunction2()' id = 'dropBtn'>Search</button>
+        <div id="dDropdown" class="dropdown-content">
+            <input type="text" placeholder="Choose Airline" id="airlineDrop" onkeyup="filterFunction2()">
+          </div>
+    </div>
+    <br>
+    <br>
+    
+    <h3 class = 'questions'> *Date of Departure: </h3>
+    <input id = 'departureDate' type = "text" placeholder="YYYY-MM-DD">
+    <br>
+    <br>
+    
+    <h3 class = 'questions'> Date of Return: </h3>
+    <input id = 'returnDate' type = "text" placeholder="YYYY-MM-DD">
+    <br>
+    <br>
+    <button type="submit" id = 'submitBtn' onclick="saveTrip()">Submit Travel Plan</button>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+    <script src="travel.js" defer></script>
+</body>
+
+</html>
