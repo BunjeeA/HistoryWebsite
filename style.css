@@ -1,7 +1,7 @@
 body{
     margin: 8px;
     font-family: 'Open Sans', sans-serif;
-    background-color: whitesmoke;
+    background-color:#F0F8FF;
 }
 .navbar {
     display: block;
@@ -33,4 +33,6 @@ body{
 #histourism{
     text-align: center;
 }
+
+
 

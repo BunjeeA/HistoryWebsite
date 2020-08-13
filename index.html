@@ -134,6 +134,15 @@ let url = u1.concat(formatCountName)
 if (url == 'https://restcountries.eu/rest/v2/name/India' && name == 'India'){
   url = 'https://restcountries.eu/rest/v2/name/india?fullText=true'
 }
+
+let turl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=37.09024,-95.712891&radius=150000&type=tourist_attraction&keyword=cruise&key=AIzaSyDhc9YqFJoeBW9hOaR85spelpLA6_ji_XU';
+fetch(turl)
+  .then(function(response){
+      return response.json();
+  }).then(function(myJson){
+    console.log(myJson);
+  })
+
 console.log(url);// check
 fetch(url)
   .then(function(response){
@@ -147,7 +156,7 @@ fetch(url)
       let cFlag = myJson[0].flag;
       let cCurrency = myJson[0].currencies[0].name;
       let cCCode = myJson[0].currencies[0].code;
-      let cCallingC = myJson[0].calling
+      let cCallingC = myJson[0].callingCodes[0];
 
       var contentString = `<div id="content">
       <div id="siteNotice">

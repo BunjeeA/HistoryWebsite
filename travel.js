@@ -1,3 +1,5 @@
+
+
 function searchAirline(){
     search = document.getElementById('ocitySearch').value;
     var data = null;
@@ -28,12 +30,14 @@ function searchAirline(){
             elements[0].parentNode.removeChild(elements[0])     
         }
 
-        data.Places.forEach(place => airlines.push(place.PlaceId))
+        data.Places.forEach(place => airlines.push(place.PlaceName + ' ' + place.PlaceId))
    
         function iterate(item){
             var drop = document.createElement('a');
             drop.innerHTML = item;
-            addDropdown.appendChild(drop)
+            addDropdown.appendChild(drop);
+            drop.setAttribute('class', 'originAir')
+            drop.setAttribute('onclick', 'selectAir(this.innerText)');
         }
 
         airlines.forEach(iterate)
@@ -41,12 +45,14 @@ function searchAirline(){
 
         else{
                 
-        data.Places.forEach(place => airlines.push(place.PlaceId))
+        data.Places.forEach(place => airlines.push(place.PlaceName + ' ' + place.PlaceId))
    
         function iterate(item){
             var drop = document.createElement('a');
             drop.innerHTML = item;
             addDropdown.appendChild(drop)
+            drop.setAttribute('onclick', 'selectAir(this.innerText)')
+
         }
 
         airlines.forEach(iterate)
@@ -90,12 +96,14 @@ function searchAirline2(){
             elements2[0].parentNode.removeChild(elements2[0])     
         }
 
-        data.Places.forEach(place => airlines.push(place.PlaceId))
+        data.Places.forEach(place => airlines.push(place.PlaceName + ' ' + place.PlaceId))
    
         function iterate(item){
             var drop = document.createElement('a');
             drop.innerHTML = item;
             addDropdown2.appendChild(drop)
+            drop.setAttribute('onclick', 'selectAir2(this.innerText)')
+
         }
 
         airlines.forEach(iterate)
@@ -103,12 +111,12 @@ function searchAirline2(){
 
         else{
                 
-        data.Places.forEach(place => airlines.push(place.PlaceId))
+        data.Places.forEach(place => airlines.push(place.PlaceName + ' ' + place.PlaceId))
    
         function iterate(item){
             var drop = document.createElement('a');
             drop.innerHTML = item;
-            drop.setAttribute('class', 'selector')
+            drop.setAttribute('onclick', 'selectAir2(this.innerText)')
             addDropdown.appendChild(drop);
 
         }
@@ -135,7 +143,7 @@ function myFunction() {
 
     }
     else{
-        document.getElementById("oDropdown").classList.toggle("hide");
+        document.getElementById("oDropdown").classList.toggle("show");
         words = document.getElementById('dropBtn');
         console.log(isCalledOnce);
         isCalledOnce = false;
@@ -166,7 +174,7 @@ function myFunction() {
   
   function filterFunction2() {
     var input, filter, ul, li, a, i;
-    input = document.getElementById("airlineDrop");
+    input = document.getElementById("airlineDrop2");
     filter = input.value.toUpperCase();
     div = document.getElementById("dDropdown");
     a = div.getElementsByTagName("a");
@@ -190,16 +198,44 @@ function searchFunction2(){
     myFunction2();
 }
 
-function selectAir(){
-    selected = this.innerHTML;
-    console.log(selected);
+function selectAir(clickedText){
+    document.getElementById("oDropdown").classList.toggle('show');
+    fix = document.getElementById('ocitySearch');
+    console.log(clickedText);
+    fix.value = clickedText;
+    
 }
 
+function selectAir2(clickedText2){
+  document.getElementById("dDropdown").classList.toggle('show');
+  fix2 = document.getElementById('dcitySearch');
+  console.log(clickedText2);
+  fix2.value = clickedText2;  
+}
+
+
+
 function saveTrip(){
-    origin = document.getElementById;
-    var trip = {
-        origin:'', 
-        destination:'', 
-        departure:'',
-        return:''};
+
+  var trip = {
+    origin:'', 
+    destination:'', 
+    departure:'',
+    return:''
+  };
+
+
+  oSearch = document.getElementById('ocitySearch').value;
+  dSearch = document.getElementById('dcitySearch').value;
+  dDate = document.getElementById('departureDate').value;
+  rDate = document.getElementById('returnDate').value;
+
+  trip.origin = oSearch;
+  trip.destination = dSearch;
+  trip.departure = dDate;
+  trip.return = rDate;
+  
+  console.log(trip);
+  
+  alert('You have a scheduled a flight from ' + trip.origin + ' to ' + trip.destination + '. The flight will depart on ' + trip.departure + ' and will return on ' + trip.return + '.')
 }
